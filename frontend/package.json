@@ -9,8 +9,6 @@
   "private": false,
   "dependencies": {
     "@babel/runtime": "^7.9.2",
-    "api": "^0.0.1",
-    "components": "^0.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "what-the-pack": "^2.0.3"
