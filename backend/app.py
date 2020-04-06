@@ -1,4 +1,5 @@
 from flask import make_response
+from flask_cors import CORS
 import msgpack
 
 from custom_flask import MsgpackFlask
@@ -7,6 +8,7 @@ from init_db import init_db
 from api import api
 
 app = MsgpackFlask(__name__)
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

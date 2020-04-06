@@ -7,13 +7,18 @@ Spring 2020, University of Helsinki.
 
 ## Getting started
 
-1. Make sure you have Python 3 installed
+1. Make sure you have Python 3, node and yarn installed
 2. Install the requirements
-    * `pip3 install -r requirements.txt`
+    * `pip3 install -r backend/requirements.txt`
 3. Run the backend in debug mode
     * `python3 backend/app.py`
 4. Check that everything's working
     * `curl http://127.0.0.1:5000/hello`
+5. Install the frontend requirements
+    * `cd frontend`
+    * `yarn install`
+6. Run the frontend
+    * `yarn start`
 
 ## Backend API
 
