@@ -1,0 +1,7 @@
+flask
+flask-filter
+flask-marshmallow
+flask-restful
+flask-sqlalchemy
+marshmallow-sqlalchemy
+msgpack

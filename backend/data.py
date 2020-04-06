@@ -1,15 +1,9 @@
 import re
-from itertools import islice
+from os import path
 
-import dataset
+from utils import get_resource_path
 
-DB_PATH = 'database.db'
-CONNECTION_STRING = f'sqlite:///{DB_PATH}'
-
-PULSAR_TABLE = 'pulsars'
-PULSAR_PRIMARY_KEY = 'psrj'
-
-PULSAR_FILE = 'data/psrcat.db'
+PULSAR_FILE = get_resource_path(path.join('data', 'psrcat.db'))
 COMMENT_CHAR = '#'
 NEW_ENTRY_CHAR = '@'
 
@@ -21,7 +15,11 @@ def drop_ref(s):
     return match.group(1)
 def drop_refs(s):
     matchiter = REF_CATCH_RE.finditer(s)
-    return ';'.join([match.group(1) for match in matchiter])
+    return [match.group(1) for match in matchiter]
+
+RENAMES = {
+    'type': 'types',
+}
 
 FLOAT_FIELDS = {
     'posepoch', 'pepoch', # Epoch of position, epoch of period of frequency
@@ -54,18 +52,7 @@ FLOAT_FIELDS = {
     'ecc', 'ecc_2', 'ecc_3', # Binary system eccentricity for member X
 }
 
-CONVERSIONS = {
-    'nglt': int, # Number of glitches observed
-    
-    'type': drop_refs, # Type codes
-    'assoc': drop_refs, # Associated other objects
-    'bincomp': drop_ref, # Binary companion type
-    'survey': lambda s: ';'.join(s.split(',')), # Surveys that detected the pulsar
-}
-
-WHITELIST = {
-    *FLOAT_FIELDS,
-    *CONVERSIONS.keys(),
+STRING_FIELDS = {
     'psrj', # J-name
     'psrb', # B-name
     'raj', # Right ascension (J2000)
@@ -76,9 +63,24 @@ WHITELIST = {
     'ephem', # Ephemeris
 }
 
-def iter_pulsars(fname):
+CONVERSIONS = {
+    'nglt': int, # Number of glitches observed
+    
+    'types': lambda ts: [{'name': t} for t in drop_refs(ts)], # Type codes
+    'assoc': drop_refs, # Associated other objects
+    'bincomp': drop_ref, # Binary companion type
+    'survey': lambda s: s.split(','), # Surveys that detected the pulsar
+}
+
+WHITELIST = {
+    *FLOAT_FIELDS,
+    *CONVERSIONS.keys(),
+    *STRING_FIELDS,
+}
+
+def iter_pulsars():
     skipped = set()
-    with open(fname) as f:
+    with open(PULSAR_FILE) as f:
         entry = {}
         for line in f:
             if line[0] == COMMENT_CHAR:
@@ -93,6 +95,8 @@ def iter_pulsars(fname):
                 continue
 
             key = tokens[0].lower()
+            if key in RENAMES:
+                key = RENAMES[key]
             if key not in WHITELIST:
                 skipped.add(key)
                 continue
@@ -107,29 +111,5 @@ def iter_pulsars(fname):
 
     print(f'Skipped fields: {", ".join(skipped)}')
 
-def init_db(db):
-    if PULSAR_TABLE in db and len(db[PULSAR_TABLE]) > 0: return
-    if PULSAR_TABLE not in db: db.create_table(PULSAR_TABLE, PULSAR_PRIMARY_KEY, db.types.text)
-    print(f'Loading data from {PULSAR_FILE} to DB...')
-    with db as tx:
-        for pulsar in iter_pulsars(PULSAR_FILE):
-            tx[PULSAR_TABLE].upsert(pulsar, [PULSAR_PRIMARY_KEY])
-
-def describe_db(db):
-    print(f'Number of tables: {len(db.tables)}')
-    for t in db.tables:
-        print(f'- Table: {t}')
-        print(f'  Columns: {len(db[t].columns)}, Rows: {len(db[t])}')
-
-def sample_data(db, table):
-    for c in db[table].columns:
-        condition = {c: {'not': None}}
-        candidates = db[table].find(**condition)
-        samples = ', '.join([str(candidate[c]) for candidate in islice(candidates, 0, 5)])
-        print(f'{c}: {samples}')
-
 if __name__ == '__main__':
-    db = dataset.connect(CONNECTION_STRING)
-    init_db(db)
-    print('Database ready!')
-    describe_db(db)
+    print(next(iter_pulsars()))
