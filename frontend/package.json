@@ -11,6 +11,8 @@
     "@babel/runtime": "^7.9.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "recharts": "^1.8.5",
+    "styled-components": "^5.1.0",
     "what-the-pack": "^2.0.3"
   },
   "devDependencies": {

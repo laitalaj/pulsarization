@@ -21,8 +21,8 @@ class Pulsar(db.Model):
     types = db.relationship('PulsarType', secondary=pulsar_to_type)
     bincomp = db.Column(db.Text)
 
-    raj = db.Column(db.Text)
-    decj = db.Column(db.Text)
+    raj = db.Column(db.Float)
+    decj = db.Column(db.Float)
     elong = db.Column(db.Float)
     elat = db.Column(db.Float)
 

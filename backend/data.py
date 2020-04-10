@@ -17,6 +17,25 @@ def drop_refs(s):
     matchiter = REF_CATCH_RE.finditer(s)
     return [match.group(1) for match in matchiter]
 
+RAJ_RE = re.compile(r'(\d+):(\d+)(:(\d+(\.\d+)?))?')
+DECJ_RE = re.compile(r'([+-])?(\d+)(:(\d+)(:(\d+(\.\d+)?))?)?')
+def convert_raj(raj):
+    match = RAJ_RE.match(raj)
+    if match is None:
+        raise RuntimeError(f'Couldn\'t convert RAJ {raj} - invalid format!')
+    res = int(match.group(1))
+    res += int(match.group(2)) / 60
+    res += float(match.group(4)) / (60 * 60) if match.group(4) is not None else 0
+    return res
+def convert_decj(decj):
+    match = DECJ_RE.match(decj)
+    if match is None:
+        raise RuntimeError(f'Couldn\'t convert DECJ {decj} - invalid format!')
+    res = int(match.group(2))
+    res += int(match.group(4)) / 60 if match.group(4) is not None else 0
+    res += float(match.group(6)) / (60 * 60) if match.group(6) is not None else 0
+    return -res if match.group(1) == '-' else res
+
 RENAMES = {
     'type': 'types',
 }
@@ -55,8 +74,6 @@ FLOAT_FIELDS = {
 STRING_FIELDS = {
     'psrj', # J-name
     'psrb', # B-name
-    'raj', # Right ascension (J2000)
-    'decj', # Declination (J2000)
     'units', # Timescale for period/freq. and epoch data; TCB or TDB
     'binary', # Binary model
     'clk', # Clock used?
@@ -65,6 +82,9 @@ STRING_FIELDS = {
 
 CONVERSIONS = {
     'nglt': int, # Number of glitches observed
+
+    'raj': convert_raj, # Right ascension (J2000)
+    'decj': convert_decj, # Declination (J2000)
     
     'types': lambda ts: [{'name': t} for t in drop_refs(ts)], # Type codes
     'assoc': drop_refs, # Associated other objects

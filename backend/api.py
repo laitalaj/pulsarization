@@ -22,7 +22,9 @@ class PulsarsEndpoint(Resource):
         parser.add_argument('fields', location='args', action='append')
         args = parser.parse_args()
 
-        p = query_with_filters(Pulsar, args['filters'], PulsarSchema)
+        p = query_with_filters(Pulsar, args['filters'], PulsarSchema) \
+            if 'filters' in args and args['filters'] is not None \
+            else Pulsar.query.all()
         return PulsarSchema(many=True, only=args['fields']).dump(p)
     def post(self):
         parser = reqparse.RequestParser()
@@ -30,7 +32,9 @@ class PulsarsEndpoint(Resource):
         parser.add_argument('filters', type=dict, location=['json', 'msgpack'], action='append')
         args = parser.parse_args()
 
-        p = query_with_filters(Pulsar, args['filters'], PulsarSchema)
+        p = query_with_filters(Pulsar, args['filters'], PulsarSchema) \
+            if 'filters' in args and args['filters'] is not None \
+            else Pulsar.query.all()
         return PulsarSchema(many=True, only=args['fields']).dump(p)
 
 api = Api()
