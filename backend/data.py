@@ -36,6 +36,11 @@ def convert_decj(decj):
     res += float(match.group(6)) / (60 * 60) if match.group(6) is not None else 0
     return -res if match.group(1) == '-' else res
 
+def generate_f0(data):
+    if 'p0' not in data:
+        return 0
+    return 1 / data['p0']
+
 RENAMES = {
     'type': 'types',
 }
@@ -92,6 +97,10 @@ CONVERSIONS = {
     'survey': lambda s: s.split(','), # Surveys that detected the pulsar
 }
 
+GENERATORS = {
+    'f0': generate_f0,
+}
+
 WHITELIST = {
     *FLOAT_FIELDS,
     *CONVERSIONS.keys(),
@@ -106,6 +115,9 @@ def iter_pulsars():
             if line[0] == COMMENT_CHAR:
                 continue
             if line[0] == NEW_ENTRY_CHAR:
+                for key, gen in GENERATORS.items():
+                    if key not in entry:
+                        entry[key] = gen(entry)
                 yield entry
                 entry = {}
                 continue

@@ -13,6 +13,10 @@ export default function CustomTooltip(props) {
       value: props.payload[0].payload.psrj,
     },
     ...props.payload,
+    {
+      name: 'Pulse Frequency',
+      value: props.payload[0].payload.f0,
+    }
   ];
 
   return <DefaultTooltipContent {...props} payload={newPayload} />;
