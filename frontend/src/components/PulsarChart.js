@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
@@ -9,13 +9,21 @@ import CustomMarker from './chartparts/CustomMarker';
 import { Text, Wrapper } from './styled';
 
 export default function PulsarChart() {
-    const [fields, setFields] = useState(['psrj', 'raj', 'decj', 'f0', 'dist_dm']);
+    const [fields, setFields] = useState(['psrj', 'raj', 'decj', 'f0', 'dist_dm', 'types']);
     const [filters, setFilters] = useState([
         { field: 'decj', op: '!=', value: 'null' },
         { field: 'raj', op: '!=', value: 'null' },
         { field: 'dist_dm', op: '!=', value: 'null' },
     ]);
     const [pulsars, pulsarsLoading] = usePulsars(fields, filters);
+    const [mappedPulsars, setMappedPulsars] = useState([]);
+
+    useEffect(() => {
+        const mapped = pulsars.map(p => {
+            return {...p, types: p.types.map(t => t.name)}
+        });
+        setMappedPulsars(mapped);
+    }, [pulsars]);
 
     const [maxFields, setMaxFields] = useState(['f0', 'dist_dm']);
     const [maximums, maximumsLoading] = useExtremes('max', maxFields);
@@ -35,7 +43,7 @@ export default function PulsarChart() {
                     <XAxis type='number' dataKey='raj' name='Right Ascension' />
                     <YAxis type='number' dataKey='decj' name='Declination' />
                     <Tooltip content={CustomTooltip} />
-                    <Scatter name='Pulsars' data={pulsars} fill='white' shape={<CustomMarker maximums={maximums} minimums={minimums} />} />
+                    <Scatter name='Pulsars' data={mappedPulsars} fill='white' shape={<CustomMarker maximums={maximums} minimums={minimums} />} />
                 </ScatterChart>
             </ResponsiveContainer>
         }

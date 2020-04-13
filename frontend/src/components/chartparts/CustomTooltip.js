@@ -15,6 +15,10 @@ export default function CustomTooltip(props) {
     },
     ...props.payload,
     {
+      name: 'Types',
+      value: data.types.join(', '),
+    },
+    {
       name: 'Pulse Frequency',
       value: data.f0,
     },
