@@ -26,3 +26,5 @@ Spring 2020, University of Helsinki.
 `curl http://127.0.0.1:5000/pulsars/J0101-6422`
 * Get J name and binary component type for all pulsars with a binary component set:
 `curl -X POST -H 'content-type: application/json' -d '{"fields": ["psrj", "bincomp"], "filters": [{"field": "bincomp", "op": "!=", "value": "null"}]}' http://127.0.0.1:5000/pulsars`
+* Get maximum values for `f0` (pulse frequency) and `dist_dm` (distance):
+`curl 'http://127.0.0.1:5000/extremes/max?fields=f0&fields=dist_dm'`
