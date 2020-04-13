@@ -7,16 +7,21 @@ export default function CustomTooltip(props) {
     return null
   }
 
+  const data = props.payload[0].payload;
   const newPayload = [
     {
       name: 'J Name',
-      value: props.payload[0].payload.psrj,
+      value: data.psrj,
     },
     ...props.payload,
     {
       name: 'Pulse Frequency',
-      value: props.payload[0].payload.f0,
-    }
+      value: data.f0,
+    },
+    {
+      name: 'Distance',
+      value: data.dist_dm,
+    },
   ];
 
   return <DefaultTooltipContent {...props} payload={newPayload} />;
