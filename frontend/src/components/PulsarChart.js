@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {
-    ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
-} from 'recharts';
 
 import { usePulsars, useExtremes } from '../api';
-import CustomTooltip from './chartparts/CustomTooltip';
-import CustomMarker from './chartparts/CustomMarker';
-import { Text, Wrapper } from './styled';
+import { Text, HorizontalWrapper, Wrapper } from './styled';
+import BrushSlider from './chartparts/BrushSlider';
+import PulsarScatter from './PulsarScatter';
 
 export default function PulsarChart() {
     const [fields, setFields] = useState(['psrj', 'raj', 'decj', 'f0', 'dist_dm', 'types']);
@@ -30,22 +27,60 @@ export default function PulsarChart() {
     const [minFields, setMinFields] = useState(['dist_dm']);
     const [minimums, minimumsLoading] = useExtremes('min', minFields);
 
-    return <Wrapper>
-        {   pulsarsLoading || maximumsLoading || minimumsLoading ?
-            <Text>Loading...</Text>
-            : <ResponsiveContainer width='80%' height='80%'>
-                <ScatterChart
-                    margin={{
-                        top: 20, right: 20, bottom: 20, left: 20,
-                    }}
-                >
-                    <CartesianGrid />
-                    <XAxis type='number' dataKey='raj' name='Right Ascension' />
-                    <YAxis type='number' dataKey='decj' name='Declination' />
-                    <Tooltip content={CustomTooltip} />
-                    <Scatter name='Pulsars' data={mappedPulsars} fill='white' shape={<CustomMarker maximums={maximums} minimums={minimums} />} />
-                </ScatterChart>
-            </ResponsiveContainer>
-        }
-    </Wrapper>
+    const [shownArea, setShownArea] = useState({
+        bottomLeft: { x: 0, y: -90 },
+        topRight: { x: 24, y: 90 },
+    });
+    const [filteredPulsars, setFilteredPulsars] = useState([]);
+    useEffect(() => {
+        const filtered = mappedPulsars.filter(p => {
+            return p.raj > shownArea.bottomLeft.x && p.raj < shownArea.topRight.x
+                && p.decj > shownArea.bottomLeft.y && p.decj < shownArea.topRight.y;
+        });
+        setFilteredPulsars(filtered);
+    }, [mappedPulsars, shownArea]);
+
+    return <HorizontalWrapper>
+        <BrushSlider
+            vertical
+            domain={[-90, 90]}
+            values={[shownArea.bottomLeft.y, shownArea.topRight.y]}
+            onChange={(values) => setShownArea({
+                bottomLeft: {
+                    y: values[1],
+                    x: shownArea.bottomLeft.x,
+                },
+                topRight: {
+                    y: values[0],
+                    x: shownArea.topRight.x,
+                },
+            })}
+        />
+        <Wrapper>
+            {pulsarsLoading || maximumsLoading || minimumsLoading
+                ? <Text>Loading...</Text>
+                : <PulsarScatter
+                    pulsars={filteredPulsars}
+                    maximums={maximums}
+                    minimums={minimums}
+                    shownArea={shownArea}
+                    onBrush={setShownArea}
+                  />
+            }
+            <BrushSlider
+                domain={[0, 24]}
+                values={[shownArea.bottomLeft.x, shownArea.topRight.x]}
+                onChange={(values) => setShownArea({
+                    bottomLeft: {
+                        x: values[0],
+                        y: shownArea.bottomLeft.y,
+                    },
+                    topRight: {
+                        x: values[1],
+                        y: shownArea.topRight.y,
+                    },
+                })}
+            />
+        </Wrapper>
+    </HorizontalWrapper>
 }
