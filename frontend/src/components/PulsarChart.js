@@ -83,6 +83,6 @@ export default function PulsarChart() {
                 })}
             />
         </Wrapper>
-        {maximumsLoading ? null : <PulsarLegend maxFrequency={maximums['f0']} />}
+        {maximumsLoading ? null : <PulsarLegend maxDistance={maximums.dist_dm} maxFrequency={maximums.f0} />}
     </HorizontalWrapper>
 }

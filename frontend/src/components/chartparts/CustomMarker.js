@@ -28,21 +28,25 @@ const getColors = (types, defaultColor) => {
     return [typeToColor[types[0]], typeToColor[types[1]]]
 }
 
-const minLength = 10;
-const maxLength = 25;
-const lineWidth = 2;
-const lineOpacity = .7;
+export const minLength = 8;
+export const maxLength = 25;
+export const lineWidth = 2;
+export const lineOpacity = .7;
+export const dotRadius = 2;
+export const freqScale = 1000;
+export const lengthScale = 25;
 
 export default function CustomMarker({cx, cy, fill, maximums, minimums, payload}) {
-    const angle = Math.PI * scale(payload.f0 / maximums.f0, 1000);
-    const length = minLength + (maxLength - minLength)
-        * scale(1 - (payload.dist_dm - minimums.dist_dm) / (maximums.dist_dm - minimums.dist_dm), 50_000_000_000_000);
-    const x = Math.cos(angle) * length;
-    const y = -Math.sin(angle) * length;
+    const angle = Math.PI * scale(payload.f0 / maximums.f0, freqScale);
+    const lineLength = minLength + (maxLength - minLength)
+        * (1 - scale((payload.dist_dm - minimums.dist_dm) / (maximums.dist_dm - minimums.dist_dm), lengthScale));
+    const x = Math.cos(angle) * lineLength;
+    const y = -Math.sin(angle) * lineLength;
     const [clr0, clr1] = getColors(payload.types, fill);
+
     return <>
-        <line x1={cx} y1={cy} x2={cx + length} y2={cy} stroke={clr0} strokeWidth={lineWidth} strokeOpacity={lineOpacity} />
+        <line x1={cx} y1={cy} x2={cx + lineLength} y2={cy} stroke={clr0} strokeWidth={lineWidth} strokeOpacity={lineOpacity} />
         <line x1={cx} y1={cy} x2={cx + x} y2={cy + y} stroke={clr1} strokeWidth={lineWidth} strokeOpacity={lineOpacity} />
-        <circle cx={cx} cy={cy} r='2' fill={fill} />
+        <circle cx={cx} cy={cy} r={dotRadius} fill={fill} />
     </>
 }

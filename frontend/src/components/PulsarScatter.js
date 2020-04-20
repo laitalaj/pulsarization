@@ -8,6 +8,7 @@ import CustomMarker from './chartparts/CustomMarker';
 import ChartBrush from './chartparts/ChartBrush';
 
 export default function PulsarScatter({pulsars, maximums, minimums, shownArea, onBrush}) {
+    const minBrush = 5;
     const [brushing, setBrushing] = useState(false);
     const [point1, setPoint1] = useState({x: 0, chartX:0, y: 0, chartY: 0});
     const [point2, setPoint2] = useState({x: 0, chartX:0, y: 0, chartY: 0});
@@ -27,6 +28,11 @@ export default function PulsarScatter({pulsars, maximums, minimums, shownArea, o
                 if(brushing) setPoint2({x: e.xValue, y: e.yValue, chartX: e.chartX, chartY: e.chartY});
             }}
             onMouseUp={e => {
+                setBrushing(false);
+                if(Math.abs(point1.chartX - point2.chartX) < minBrush
+                    && Math.abs(point1.chartY - point2.chartY) < minBrush) {
+                    return;
+                }
                 const area = {
                     bottomLeft: {
                         x: point1.x < e.xValue ? point1.x : e.xValue,
@@ -37,7 +43,6 @@ export default function PulsarScatter({pulsars, maximums, minimums, shownArea, o
                         y: point1.y >= e.yValue ? point1.y : e.yValue,
                     },
                 };
-                setBrushing(false);
                 onBrush(area);
             }}
         >
