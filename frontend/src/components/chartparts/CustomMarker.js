@@ -33,8 +33,7 @@ const maxLength = 25;
 const lineWidth = 2;
 const lineOpacity = .7;
 
-export default function CustomMarker(props) {
-    const {cx, cy, fill, maximums, minimums, payload} = props;
+export default function CustomMarker({cx, cy, fill, maximums, minimums, payload}) {
     const angle = Math.PI * scale(payload.f0 / maximums.f0, 1000);
     const length = minLength + (maxLength - minLength)
         * scale(1 - (payload.dist_dm - minimums.dist_dm) / (maximums.dist_dm - minimums.dist_dm), 50_000_000_000_000);

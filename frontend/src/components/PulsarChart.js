@@ -4,6 +4,7 @@ import { usePulsars, useExtremes } from '../api';
 import { Text, HorizontalWrapper, Wrapper } from './styled';
 import BrushSlider from './chartparts/BrushSlider';
 import PulsarScatter from './PulsarScatter';
+import PulsarLegend from './PulsarLegend';
 
 export default function PulsarChart() {
     const [fields, setFields] = useState(['psrj', 'raj', 'decj', 'f0', 'dist_dm', 'types']);
@@ -82,5 +83,6 @@ export default function PulsarChart() {
                 })}
             />
         </Wrapper>
+        {maximumsLoading ? null : <PulsarLegend maxFrequency={maximums['f0']} />}
     </HorizontalWrapper>
 }

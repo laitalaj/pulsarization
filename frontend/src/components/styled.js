@@ -33,12 +33,23 @@ export const Wrapper = styled.div`
     justify-content: flex-start;
 `
 
+export const LegendWrapper = styled(Wrapper)`
+    flex: 0 1 auto;
+    margin-right: 20px;
+`
+
 export const Title = styled.h1`
     color: white;
 `
 
 export const Text = styled.p`
     color: white;
+`
+
+export const LegendSvg = styled.svg`
+    font-family: Roboto;
+    font-size: 11px;
+    fill: white;
 `
 
 const sliderSize = '80%';
