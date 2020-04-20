@@ -4,7 +4,7 @@ const scale = (frac, base) => {
     return Math.log(1 + (base - 1) * frac) / Math.log(base);
 }
 
-const typeToColor = {
+export const typeToColor = {
     'RRAT': '#00b100',
     'RRAT(?)': '#7aae7d',
     'XINS': '#0062ba',

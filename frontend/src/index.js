@@ -6,7 +6,7 @@ import {Content, Title} from './components/styled';
 
 function App() {
     return <Content>
-        <Title>Hello Pulsarization!</Title>
+        <Title>Pulsarization</Title>
         <PulsarChart />
     </Content>
 }
