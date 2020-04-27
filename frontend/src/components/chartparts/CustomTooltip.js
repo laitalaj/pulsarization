@@ -35,7 +35,14 @@ export default function CustomTooltip(props) {
             name: 'Number of pulsars in the area',
             value: data.n,
         },
-        ...props.payload,
+        {
+            name: 'Right ascension',
+            value: `${data.xRange[0].toFixed(3)} to ${data.xRange[1].toFixed(3)}`
+        },
+        {
+            name: 'Declination',
+            value: `${data.yRange[0].toFixed(3)} to ${data.yRange[1].toFixed(3)}`
+        },
     ];
   }
 
