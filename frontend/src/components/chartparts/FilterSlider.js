@@ -26,7 +26,7 @@ function Track({vertical, source, target, getTrackProps}) {
     />
 }
 
-export default function BrushSlider({domain, values, vertical, onChange}) {
+export default function FilterSlider({domain, values, vertical, onChange}) {
     const SliderElem = vertical ? VerticalSlider : HorizontalSlider;
     return <SliderElem
         vertical={vertical}
