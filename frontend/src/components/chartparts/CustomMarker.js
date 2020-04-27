@@ -28,6 +28,7 @@ const getColors = (types, defaultColor) => {
     return [typeToColor[types[0]], typeToColor[types[1]]]
 }
 
+export const startAngle = 3*Math.PI / 2;
 export const minRadius = 5;
 export const maxRadius = 12;
 export const lineWidth = 2;
@@ -37,7 +38,6 @@ export const freqScale = 1000;
 export const radiusScale = 25;
 
 export default function CustomMarker({cx, cy, fill, maximums, minimums, payload}) {
-    const startAngle = 3*Math.PI / 2;
     const angle = 2 * Math.PI * scale(payload.f0 / maximums.f0, freqScale);
     const arcRadius = minRadius + (maxRadius - minRadius)
         * (1 - scale((payload.dist_dm - minimums.dist_dm) / (maximums.dist_dm - minimums.dist_dm), radiusScale));

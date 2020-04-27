@@ -6,31 +6,31 @@ import { minRadius, maxRadius, lineWidth, lineOpacity, radiusScale } from './Cus
 
 export default function LengthLegend({maxDistance, fill}) {
     const lengthCount = 5;
-    const lengths = [...Array(lengthCount).keys()].map(
+    const lengths = [...Array(lengthCount).keys()].reverse().map(
         i => minRadius + i / (lengthCount - 1) * (maxRadius - minRadius)
     );
     const entryStart = 15;
-    const entrySize = 15;
-    const svgWidth = maxRadius + 30;
-    const svgHeight = entrySize * lengthCount + entryStart;
+    const entrySize = 30;
+    const svgWidth = entrySize * lengthCount + entryStart;
+    const svgHeight = maxRadius + 15;
 
     return <>
         <Text>Pulsar Distance (kpc)</Text>
         <LegendSvg width={svgWidth} height={svgHeight}>
             {
                 lengths.map((l, i) => {
-                    const y = entryStart + i * entrySize;
+                    const x = entryStart + i * entrySize;
                     return <React.Fragment key={i}>
                         <line
-                            x1={0}
-                            y1={y}
-                            x2={l}
-                            y2={y}
+                            x1={x}
+                            y1={0}
+                            x2={x}
+                            y2={l}
                             stroke={fill}
                             strokeWidth={lineWidth}
                             strokeOpacity={lineOpacity}
                         />
-                        <text x={l + 2} y={y} dominantBaseline='middle'>
+                        <text x={x} y={l + 2} dominantBaseline='hanging' textAnchor='middle'>
                             {(invScale(1 - (l - minRadius) / (maxRadius - minRadius), radiusScale)*maxDistance).toFixed(2)}
                         </text>
                     </React.Fragment>
