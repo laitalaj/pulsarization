@@ -5,4 +5,4 @@ flask-marshmallow
 flask-restful
 flask-sqlalchemy
 marshmallow-sqlalchemy
-msgpack
+msgpack==0.6.2
