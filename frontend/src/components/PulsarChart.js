@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { usePulsars, useExtremes } from '../api';
+import { blobify } from '../utils';
 import { Text, HorizontalWrapper, Wrapper } from './styled';
 import BrushSlider from './chartparts/BrushSlider';
 import PulsarScatter from './PulsarScatter';
@@ -18,7 +19,11 @@ export default function PulsarChart() {
 
     useEffect(() => {
         const mapped = pulsars.map(p => {
-            return {...p, types: p.types.map(t => t.name)}
+            return {
+                ...p,
+                types: p.types.map(t => t.name),
+                itemType: 'pulsar',
+            }
         });
         setMappedPulsars(mapped);
     }, [pulsars]);
@@ -33,12 +38,15 @@ export default function PulsarChart() {
         topRight: { x: 24, y: 90 },
     });
     const [filteredPulsars, setFilteredPulsars] = useState([]);
+    const [blobs, setBlobs] = useState([]);
     useEffect(() => {
         const filtered = mappedPulsars.filter(p => {
             return p.raj > shownArea.bottomLeft.x && p.raj < shownArea.topRight.x
                 && p.decj > shownArea.bottomLeft.y && p.decj < shownArea.topRight.y;
         });
-        setFilteredPulsars(filtered);
+        const blobified = blobify(filtered, shownArea);
+        setFilteredPulsars(blobified.pulsars);
+        setBlobs(blobified.blobs);
     }, [mappedPulsars, shownArea]);
 
     return <HorizontalWrapper>
@@ -62,6 +70,7 @@ export default function PulsarChart() {
                 ? <Text>Loading...</Text>
                 : <PulsarScatter
                     pulsars={filteredPulsars}
+                    blobs={blobs}
                     maximums={maximums}
                     minimums={minimums}
                     shownArea={shownArea}

@@ -3,11 +3,13 @@ import {
     ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 
+import BlobMarker from './chartparts/BlobMarker';
 import CustomTooltip from './chartparts/CustomTooltip';
 import CustomMarker from './chartparts/CustomMarker';
 import ChartBrush from './chartparts/ChartBrush';
+import ScatterSvgDefinitions from './chartparts/ScatterSvgDefinitions';
 
-export default function PulsarScatter({pulsars, maximums, minimums, shownArea, onBrush}) {
+export default function PulsarScatter({pulsars, blobs, maximums, minimums, shownArea, onBrush}) {
     const minBrush = 5;
     const [brushing, setBrushing] = useState(false);
     const [point1, setPoint1] = useState({x: 0, chartX:0, y: 0, chartY: 0});
@@ -15,7 +17,6 @@ export default function PulsarScatter({pulsars, maximums, minimums, shownArea, o
 
     return <ResponsiveContainer width='85%' height='85%'>
         <ScatterChart
-            data={pulsars}
             margin={{
                 top: 20, right: 20, bottom: 20, left: 20,
             }}
@@ -47,6 +48,7 @@ export default function PulsarScatter({pulsars, maximums, minimums, shownArea, o
             }}
         >
             {ChartBrush({brushing, point1, point2}) /* For some reason doing <ChartBrush /> results in the element not rendering :shrug: */}
+            {ScatterSvgDefinitions()}
             <CartesianGrid />
             <XAxis
                 type='number'
@@ -63,7 +65,29 @@ export default function PulsarScatter({pulsars, maximums, minimums, shownArea, o
                 name='Declination'
             />
             <Tooltip content={CustomTooltip} />
-            <Scatter name='Pulsars' fill='white' isAnimationActive={false} shape={<CustomMarker maximums={maximums} minimums={minimums} />} />
+            <Scatter
+                name='Pulsars'
+                data={pulsars}
+                fill='white'
+                isAnimationActive={false}
+                shape={<CustomMarker maximums={maximums} minimums={minimums} />}
+            />
+            <Scatter
+                name='Blobs'
+                data={blobs.map(blob => {
+                    return {
+                        raj: (blob.x[0] + blob.x[1]) / 2,
+                        decj: (blob.y[0] + blob.y[1]) / 2,
+                        xRange: blob.x,
+                        yRange: blob.y,
+                        n: blob.n,
+                        itemType: 'blob',
+                    }
+                })}
+                fill='white'
+                isAnimationActive={false}
+                shape={BlobMarker}
+            />
         </ScatterChart>
     </ResponsiveContainer>
 }
