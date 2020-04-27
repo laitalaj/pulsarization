@@ -2,12 +2,12 @@ import React from 'react';
 
 import { invScale } from '../../utils';
 import { Text, LegendSvg } from '../styled';
-import { maxLength, lineWidth, lineOpacity, dotRadius, freqScale } from './CustomMarker';
+import { maxRadius, lineWidth, lineOpacity, dotRadius, freqScale } from './CustomMarker';
 
 export default function AngleLegend({maxFrequency, fill}) {
     const angles = [0, Math.PI / 4, Math.PI / 2,  3*Math.PI / 4, Math.PI];
     const scale = 1.4;
-    const lineLength = Math.ceil(maxLength * scale);
+    const lineLength = Math.ceil(maxRadius * scale);
     const svgWidth = (lineLength + 20) * 2;
     const svgHeight = lineLength + 20;
     const cx = svgWidth / 2;

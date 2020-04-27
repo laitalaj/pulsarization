@@ -28,25 +28,32 @@ const getColors = (types, defaultColor) => {
     return [typeToColor[types[0]], typeToColor[types[1]]]
 }
 
-export const minLength = 8;
-export const maxLength = 25;
+export const minRadius = 5;
+export const maxRadius = 12;
 export const lineWidth = 2;
 export const lineOpacity = .7;
 export const dotRadius = 2;
 export const freqScale = 1000;
-export const lengthScale = 25;
+export const radiusScale = 25;
 
 export default function CustomMarker({cx, cy, fill, maximums, minimums, payload}) {
-    const angle = Math.PI * scale(payload.f0 / maximums.f0, freqScale);
-    const lineLength = minLength + (maxLength - minLength)
-        * (1 - scale((payload.dist_dm - minimums.dist_dm) / (maximums.dist_dm - minimums.dist_dm), lengthScale));
-    const x = Math.cos(angle) * lineLength;
-    const y = -Math.sin(angle) * lineLength;
+    const startAngle = 3*Math.PI / 2;
+    const angle = 2 * Math.PI * scale(payload.f0 / maximums.f0, freqScale);
+    const arcRadius = minRadius + (maxRadius - minRadius)
+        * (1 - scale((payload.dist_dm - minimums.dist_dm) / (maximums.dist_dm - minimums.dist_dm), radiusScale));
+    const x = Math.cos(startAngle + angle) * arcRadius;
+    const y = -Math.sin(startAngle + angle) * arcRadius;
     const [clr0, clr1] = getColors(payload.types, fill);
 
     return <>
-        <line x1={cx} y1={cy} x2={cx + lineLength} y2={cy} stroke={clr0} strokeWidth={lineWidth} strokeOpacity={lineOpacity} />
-        <line x1={cx} y1={cy} x2={cx + x} y2={cy + y} stroke={clr1} strokeWidth={lineWidth} strokeOpacity={lineOpacity} />
-        <circle cx={cx} cy={cy} r={dotRadius} fill={fill} />
+        <line x1={cx} y1={cy} x2={cx} y2={cy + arcRadius} stroke={clr0} strokeWidth={lineWidth} strokeOpacity={lineOpacity} />
+        <path
+            d={`M ${cx} ${cy + arcRadius} A ${arcRadius} ${arcRadius} 0 ${angle > Math.PI ? '1' : '0'} 0 ${cx + x} ${cy + y}`}
+            fillOpacity={0}
+            stroke={clr0}
+            strokeWidth={lineWidth}
+            strokeOpacity={lineOpacity}
+        />
+        <circle cx={cx} cy={cy} r={dotRadius} fill={clr1} />
     </>
 }

@@ -2,16 +2,16 @@ import React from 'react';
 
 import { invScale } from '../../utils';
 import { Text, LegendSvg } from '../styled';
-import { minLength, maxLength, lineWidth, lineOpacity, lengthScale } from './CustomMarker';
+import { minRadius, maxRadius, lineWidth, lineOpacity, radiusScale } from './CustomMarker';
 
 export default function LengthLegend({maxDistance, fill}) {
     const lengthCount = 5;
     const lengths = [...Array(lengthCount).keys()].map(
-        i => minLength + i / (lengthCount - 1) * (maxLength - minLength)
+        i => minRadius + i / (lengthCount - 1) * (maxRadius - minRadius)
     );
     const entryStart = 15;
     const entrySize = 15;
-    const svgWidth = maxLength + 30;
+    const svgWidth = maxRadius + 30;
     const svgHeight = entrySize * lengthCount + entryStart;
 
     return <>
@@ -31,7 +31,7 @@ export default function LengthLegend({maxDistance, fill}) {
                             strokeOpacity={lineOpacity}
                         />
                         <text x={l + 2} y={y} dominantBaseline='middle'>
-                            {(invScale(1 - (l - minLength) / (maxLength - minLength), lengthScale)*maxDistance).toFixed(2)}
+                            {(invScale(1 - (l - minRadius) / (maxRadius - minRadius), radiusScale)*maxDistance).toFixed(2)}
                         </text>
                     </React.Fragment>
                 })
