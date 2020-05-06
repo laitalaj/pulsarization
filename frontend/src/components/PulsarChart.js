@@ -31,8 +31,6 @@ export default function PulsarChart() {
 
     const [maxFields, setMaxFields] = useState(['f0', 'dist_dm']);
     const [maximums, maximumsLoading] = useExtremes('max', maxFields);
-    const [minFields, setMinFields] = useState(['dist_dm']);
-    const [minimums, minimumsLoading] = useExtremes('min', minFields);
 
     const [shownArea, setShownArea] = useState({
         bottomLeft: { x: 0, y: -90 },
@@ -82,13 +80,12 @@ export default function PulsarChart() {
             })}
         />
         <Wrapper>
-            {pulsarsLoading || maximumsLoading || minimumsLoading
+            {pulsarsLoading || maximumsLoading
                 ? <Text>Loading...</Text>
                 : <PulsarScatter
                     pulsars={filteredPulsars}
                     blobs={blobs}
                     maximums={maximums}
-                    minimums={minimums}
                     shownArea={shownArea}
                     onBrush={setShownArea}
                   />

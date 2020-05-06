@@ -9,7 +9,7 @@ import CustomMarker from './chartparts/CustomMarker';
 import ChartBrush from './chartparts/ChartBrush';
 import ScatterSvgDefinitions from './chartparts/ScatterSvgDefinitions';
 
-export default function PulsarScatter({pulsars, blobs, maximums, minimums, shownArea, onBrush}) {
+export default function PulsarScatter({pulsars, blobs, maximums, shownArea, onBrush}) {
     const minBrush = 5;
     const [brushing, setBrushing] = useState(false);
     const [point1, setPoint1] = useState({x: 0, chartX:0, y: 0, chartY: 0});
@@ -70,7 +70,7 @@ export default function PulsarScatter({pulsars, blobs, maximums, minimums, shown
                 data={pulsars}
                 fill='white'
                 isAnimationActive={false}
-                shape={<CustomMarker maximums={maximums} minimums={minimums} />}
+                shape={<CustomMarker maximums={maximums} />}
             />
             <Scatter
                 name='Blobs'

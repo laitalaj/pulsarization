@@ -37,10 +37,10 @@ export const dotRadius = 2;
 export const freqScale = 1000;
 export const radiusScale = 25;
 
-export default function CustomMarker({cx, cy, fill, maximums, minimums, payload}) {
+export default function CustomMarker({cx, cy, fill, maximums, payload}) {
     const angle = 2 * Math.PI * scale(payload.f0 / maximums.f0, freqScale);
     const arcRadius = minRadius + (maxRadius - minRadius)
-        * (1 - scale((payload.dist_dm - minimums.dist_dm) / (maximums.dist_dm - minimums.dist_dm), radiusScale));
+        * (1 - scale(payload.dist_dm / maximums.dist_dm, radiusScale));
     const x = Math.cos(startAngle + angle) * arcRadius;
     const y = -Math.sin(startAngle + angle) * arcRadius;
     const [clr0, clr1] = getColors(payload.types, fill);
