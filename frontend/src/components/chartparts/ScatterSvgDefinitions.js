@@ -6,5 +6,8 @@ export default function ScatterSvgDefinitions() {
             <stop offset='0%' style={{stopColor: 'white', stopOpacity:1}} />
             <stop offset='100%' style={{stopColor: 'white', stopOpacity:0}} />
         </radialGradient>
+        <pattern id="blobPattern" width="16" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="10" stroke='white' strokeWidth='3' />
+        </pattern>
     </defs>
 }

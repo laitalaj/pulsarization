@@ -81,6 +81,7 @@ export default function PulsarScatter({pulsars, blobs, maximums, shownArea, onBr
                         xRange: blob.x,
                         yRange: blob.y,
                         n: blob.n,
+                        neighbors: blob.neighbors,
                         itemType: 'blob',
                     }
                 })}

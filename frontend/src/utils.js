@@ -23,24 +23,26 @@ export const blobify = (pulsars, shownArea, xbins=16, ybins=9, nToBlob=20) => {
         bins[yBin][xBin].push(p);
     });
 
-    return bins.reduce((acc, row, y) => {
-        const reducedBins = row.reduce((binAcc, bin, x) => {
-            if(bin.length >= nToBlob)
-                binAcc.blobs.push({
+    const res = {pulsars: [], blobs: []};
+    bins.forEach((row, y) => {
+        row.forEach((bin, x) => {
+            if(bin.length >= nToBlob) {
+                res.blobs.push({
                     x: getBinCoords(x, xStart, xRange, xbins),
+                    y: getBinCoords(y, yStart, yRange, ybins),
                     n: bin.length,
-                });
-            else
-                binAcc.pulsars.push(...bin);
-            return binAcc;
-        }, {pulsars: [], blobs: []});
-        acc.pulsars.push(...reducedBins.pulsars);
-        acc.blobs.push(...reducedBins.blobs.map(blob => {
-            return {
-                ...blob,
-                y: getBinCoords(y, yStart, yRange, ybins),
-            };
-        }));
-        return acc;
-    }, {pulsars: [], blobs: []});
+                    neighbors: {
+                        bottom: y > 0 && bins[y - 1][x].length >= nToBlob,
+                        top: y < bins.length - 1 && bins[y + 1][x].length >= nToBlob,
+                        left: x > 0 && bins[y][x - 1].length >= nToBlob,
+                        right: x < bins[y].length - 1 && bins[y][x + 1].length >= nToBlob,
+                    },
+                })
+            } else {
+                res.pulsars.push(...bin);
+            }
+        });
+    });
+
+    return res;
 }
