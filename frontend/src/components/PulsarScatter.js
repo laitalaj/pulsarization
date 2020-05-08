@@ -7,7 +7,6 @@ import BlobMarker from './chartparts/BlobMarker';
 import CustomTooltip from './chartparts/CustomTooltip';
 import CustomMarker from './chartparts/CustomMarker';
 import ChartBrush from './chartparts/ChartBrush';
-import ScatterSvgDefinitions from './chartparts/ScatterSvgDefinitions';
 
 export default function PulsarScatter({pulsars, blobs, maximums, shownArea, onBrush}) {
     const minBrush = 5;
@@ -48,8 +47,6 @@ export default function PulsarScatter({pulsars, blobs, maximums, shownArea, onBr
             }}
         >
             {ChartBrush({brushing, point1, point2}) /* For some reason doing <ChartBrush /> results in the element not rendering :shrug: */}
-            {ScatterSvgDefinitions()}
-            <CartesianGrid />
             <XAxis
                 type='number'
                 dataKey='raj'
