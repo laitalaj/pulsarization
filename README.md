@@ -1,11 +1,18 @@
 # pulsarization
 
+![Screenshot of Pulsarization](/docs/screenshot.png)
+
 Pulsar data visualization based on
 [ATNF Pulsar Catalogue](https://www.atnf.csiro.au/research/pulsar/psrcat/).
 Made for the Interactive Data Visualization course,
 Spring 2020, University of Helsinki.
 
-## Getting started
+## Try it!
+
+Pulsarization is available for playing around with at
+[pulsarization.azurewebsites.net](https://pulsarization.azurewebsites.net/)!
+
+## Running locally
 
 1. Make sure you have Python 3, node and yarn installed
 2. Install the requirements
@@ -22,9 +29,12 @@ Spring 2020, University of Helsinki.
 
 ## Backend API
 
+The publicly hosted backend API is available at
+[pulsarization-api.azurewebsites.net](https://pulsarization-api.azurewebsites.net/hello).
+
 * Get data for one pulsar with given [J name](https://en.wikipedia.org/wiki/Pulsar#Nomenclature):
-`curl http://127.0.0.1:5000/pulsars/J0101-6422`
+`curl https://pulsarization-api.azurewebsites.net/pulsars/J0101-6422`
 * Get J name and binary component type for all pulsars with a binary component set:
-`curl -X POST -H 'content-type: application/json' -d '{"fields": ["psrj", "bincomp"], "filters": [{"field": "bincomp", "op": "!=", "value": "null"}]}' http://127.0.0.1:5000/pulsars`
+`curl -X POST -H 'content-type: application/json' -d '{"fields": ["psrj", "bincomp"], "filters": [{"field": "bincomp", "op": "!=", "value": "null"}]}' https://pulsarization-api.azurewebsites.net/pulsars`
 * Get maximum values for `f0` (pulse frequency) and `dist_dm` (distance):
-`curl 'http://127.0.0.1:5000/extremes/max?fields=f0&fields=dist_dm'`
+`curl 'https://pulsarization-api.azurewebsites.net/extremes/max?fields=f0&fields=dist_dm'`
