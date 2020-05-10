@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import MessagePack from 'what-the-pack';
 
-const apiRoot = 'http://127.0.0.1:5000'
+const apiRoot = process.env.API_ROOT || 'http://127.0.0.1:5000'
 const commonHeaders = {
     accept: 'application/msgpack',
 }
