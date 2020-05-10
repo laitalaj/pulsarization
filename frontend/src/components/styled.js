@@ -1,4 +1,5 @@
 import Slider from 'react-compound-slider';
+import BaseTable from 'react-base-table';
 import styled from 'styled-components';
 
 export const Content = styled.div`
@@ -38,21 +39,26 @@ export const LegendWrapper = styled(Wrapper)`
     margin-right: 20px;
 `
 
+export const fontFamily = '"Droid Sans Mono", monospace';
+
 export const Title = styled.h1`
     color: white;
+    font-family: ${fontFamily};
 `
 
 export const Text = styled.p`
     color: white;
+    font-family: ${fontFamily};
 `
 
 export const LegendSvg = styled.svg`
-    font-family: Roboto;
+    font-family: ${fontFamily};
     font-size: 11px;
     fill: white;
 `
 
-const sliderSize = '80%';
+export const mediumGray = '#a1a1a1';
+const sliderSize = '100%';
 const sliderTotalHeight = '60px';
 
 export const BaseSlider = styled(Slider)`
@@ -70,36 +76,42 @@ export const VerticalSlider = styled(BaseSlider)`
     margin-left: 40px;
 `
 
-const sliderRailHeight = '10px';
-const sliderRailMargin = '20px';
+export const VerticalSpacer = styled.div`
+    height: ${sliderTotalHeight};
+`
+
+const sliderRailHeight = 10;
+const sliderRailMargin = 20;
+const sliderRailBorder = 1;
 
 export const BaseRail = styled.div`
     position: absolute;
     cursor: pointer;
     border-radius: 5px;
-    border: 1px solid white;
+    border: ${sliderRailBorder}px solid white;
 `
 
 export const HorizontalRail = styled(BaseRail)`
     width: 100%;
-    height: ${sliderRailHeight};
-    margin-top: ${sliderRailMargin};
+    height: ${sliderRailHeight}px;
+    margin-top: ${sliderRailMargin}px;
 `
 
 export const VerticalRail = styled(BaseRail)`
-    width: ${sliderRailHeight};
+    width: ${sliderRailHeight}px;
     height: 100%;
-    margin-left: ${sliderRailMargin};
+    margin-left: ${sliderRailMargin}px;
 `
 
-const handleWidthPx = 14;
-const handleHeightPx = 30;
+const handleWidthPx = 20;
+const handleHeightPx = 20;
+const handleMargin = 15;
 
 export const HandleGrab = styled.div`
     position: absolute;
     z-index: 2;
     border: 0px;
-    border-radius: 5px;
+    border-radius: ${Math.min(handleWidthPx, handleHeightPx)}px;
     text-align: center;
     cursor: pointer;
     background-color: white;
@@ -110,7 +122,7 @@ export const HorizontalHandleGrab = styled(HandleGrab)`
     width: ${handleWidthPx}px;
     height: ${handleHeightPx}px;
     margin-left: ${-handleWidthPx / 2}px;
-    margin-top: 10px;
+    margin-top: ${handleMargin}px;
 `
 
 export const VerticalHandleGrab = styled(HandleGrab)`
@@ -118,43 +130,44 @@ export const VerticalHandleGrab = styled(HandleGrab)`
     width: ${handleHeightPx}px;
     height: ${handleWidthPx}px;
     margin-top: ${-handleWidthPx / 2}px;
-    margin-left: 10px;
+    margin-left: ${handleMargin}px;
 `
 
 export const HandleText = styled.div`
-    font-family: Roboto;
-    font-size: 11px;
+    font-family: ${fontFamily};
+    font-size: 10px;
     color: white;
 `
 
 export const HorizontalHandleText = styled(HandleText)`
-    margin-top: 35px;
+    margin-left: -50%;
+    margin-top: 27px;
 `
 
 export const VerticalHandleText = styled(HandleText)`
-    margin-left: -65px;
+    margin-left: -67px;
 `
 
 export const TrackFill = styled.div`
     position: absolute;
     z-index: 1;
-    background-color: white;
+    background-color: ${mediumGray};
     border-radius: 5px;
     cursor: pointer;
 `
 
 export const HorizontalTrackFill = styled(TrackFill)`
-    height: ${sliderRailHeight};
+    height: ${sliderRailHeight}px;
     left: ${props => props.sourcePercent}%;
     width: ${props => props.targetPercent - props.sourcePercent}%;
-    margin-top: ${sliderRailMargin};
+    margin-top: ${sliderRailMargin+sliderRailBorder}px;
 `
 
 export const VerticalTrackFill = styled(TrackFill)`
-    width: ${sliderRailHeight};
+    width: ${sliderRailHeight}px;
     top: ${props => props.sourcePercent}%;
     height: ${props => props.targetPercent - props.sourcePercent}%;
-    margin-left: ${sliderRailMargin};
+    margin-left: ${sliderRailMargin+sliderRailBorder}px;
 `
 
 export const ToggleText = styled.div`
@@ -162,7 +175,23 @@ export const ToggleText = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
-    font-size: 15px;
+    font-size: 12px;
+    font-family: ${fontFamily};
     color: white;
     padding-${props => props.side}: 4px;
+`
+
+export const StyledTable = styled(BaseTable)`
+    margin-left: ${props => -props.width / 2}px;
+    margin-top: ${props => -props.height / props.heightMultiplier}px;
+    color: white;
+    font-family: ${fontFamily};
+    background-color: black;
+    scrollbar-color: white;
+    & .BaseTable__header-row {
+        background-color: ${mediumGray};
+    }
+    & .BaseTable__row {
+        background-color: black;
+    }
 `

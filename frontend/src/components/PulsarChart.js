@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { usePulsars, useExtremes } from '../api';
 import { blobify } from '../utils';
-import { Text, HorizontalWrapper, Wrapper } from './styled';
+import { Text, HorizontalWrapper, VerticalSpacer, Wrapper, LegendWrapper } from './styled';
 import FilterSlider from './chartparts/FilterSlider';
 import PulsarScatter from './PulsarScatter';
 import PulsarLegend from './PulsarLegend';
@@ -79,24 +79,27 @@ export default function PulsarChart() {
     }, [mappedPulsars, shownArea, freqRange, distRange, shownTypes]);
 
     return <HorizontalWrapper>
-        <FilterSlider
-            vertical
-            domain={[-90, 90]}
-            values={[shownArea.bottomLeft.y, shownArea.topRight.y]}
-            onChange={(values) => setShownArea({
-                bottomLeft: {
-                    y: values[1],
-                    x: shownArea.bottomLeft.x,
-                },
-                topRight: {
-                    y: values[0],
-                    x: shownArea.topRight.x,
-                },
-            })}
-        />
+        <LegendWrapper>
+            <FilterSlider
+                vertical
+                domain={[-90, 90]}
+                values={[shownArea.bottomLeft.y, shownArea.topRight.y]}
+                onChange={(values) => setShownArea({
+                    bottomLeft: {
+                        y: values[1],
+                        x: shownArea.bottomLeft.x,
+                    },
+                    topRight: {
+                        y: values[0],
+                        x: shownArea.topRight.x,
+                    },
+                })}
+            />
+            <VerticalSpacer />
+        </LegendWrapper>
         <Wrapper>
             {pulsarsLoading || maximumsLoading
-                ? <Text>Loading...</Text>
+                ? <Text style={{marginBottom: '50%'}}>Loading...</Text>
                 : <ChartContent
                     tableOn={tableOn}
                     pulsars={filteredPulsars}

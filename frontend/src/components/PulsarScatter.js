@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import {
-    ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+    ScatterChart, Scatter, XAxis, YAxis,  Tooltip, ResponsiveContainer
 } from 'recharts';
 
 import BlobMarker from './chartparts/BlobMarker';
 import CustomTooltip from './chartparts/CustomTooltip';
 import CustomMarker from './chartparts/CustomMarker';
 import ChartBrush from './chartparts/ChartBrush';
+import { fontFamily } from './styled';
 
 export default function PulsarScatter({pulsars, blobs, maximums, shownArea, onBrush}) {
     const minBrush = 5;
+    const tickStyle = {
+        fontFamily,
+        fontSize: 10,
+    };
     const [brushing, setBrushing] = useState(false);
     const [point1, setPoint1] = useState({x: 0, chartX:0, y: 0, chartY: 0});
     const [point2, setPoint2] = useState({x: 0, chartX:0, y: 0, chartY: 0});
 
-    return <ResponsiveContainer width='85%' height='85%'>
+    return <ResponsiveContainer width='95%' height='90%'>
         <ScatterChart
             margin={{
                 top: 20, right: 20, bottom: 20, left: 20,
@@ -53,6 +58,8 @@ export default function PulsarScatter({pulsars, blobs, maximums, shownArea, onBr
                 domain={[shownArea.bottomLeft.x, shownArea.topRight.x]}
                 tickFormatter={t => t.toFixed(3)}
                 name='Right Ascension'
+                stroke='white'
+                tick={tickStyle}
             />
             <YAxis
                 type='number'
@@ -60,6 +67,8 @@ export default function PulsarScatter({pulsars, blobs, maximums, shownArea, onBr
                 domain={[shownArea.bottomLeft.y, shownArea.topRight.y]}
                 tickFormatter={t => t.toFixed(3)}
                 name='Declination'
+                stroke='white'
+                tick={tickStyle}
             />
             <Tooltip content={CustomTooltip} />
             <Scatter

@@ -8,7 +8,7 @@ export default function ColorLegend({shownTypes, onTypeClick}) {
     const entryStart = 10;
     const entrySize = 15;
     const rectSize = 9;
-    const svgWidth = 70;
+    const svgWidth = 90;
     const svgHeight = entrySize * (entryCount + 1) + entryStart;
     return <>
         <Text>Pulsar Type</Text>

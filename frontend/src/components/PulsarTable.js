@@ -1,8 +1,8 @@
 import React from 'react';
-import BaseTable, { AutoResizer } from 'react-base-table'
+import { AutoResizer } from 'react-base-table'
 import 'react-base-table/styles.css'
 
-import { Wrapper } from './styled';
+import { StyledTable, Wrapper } from './styled';
 
 const createColumn = (key, title, extra={}) => {
     return { key, dataKey: key, title, width: 1000, align: 'right', ...extra };
@@ -14,18 +14,23 @@ const columns = [
     createColumn('decj', 'Declination'),
     createColumn('dist_dm', 'Distance (kpc)'),
     createColumn('f0', 'Pulse frequency (Hz)'),
-    createColumn('types', 'Pulsar types'),
+    createColumn('types', 'Pulsar types', {align: 'left'}),
 ]
 
 export default function PulsarTable({pulsars}) {
-    return <Wrapper style={{width: '100%'}}><AutoResizer>
-        {({ width, height }) => <BaseTable
-            style={{marginLeft: -width*.4, marginTop: -height}}
-            rowKey='psrj'
-            width={width*.8}
-            height={height*.9}
-            columns={columns}
-            data={pulsars}
-        />}
-    </AutoResizer></Wrapper>;
+    const widthMultiplier = .85;
+    const heightMultiplier = .95;
+    return <Wrapper style={{width: '100%'}}>
+        <AutoResizer>
+            {({ width, height }) => <StyledTable
+                rowKey='psrj'
+                width={width*widthMultiplier}
+                widthMultiplier={widthMultiplier}
+                height={height*heightMultiplier}
+                heightMultiplier={heightMultiplier}
+                columns={columns}
+                data={pulsars}
+            />}
+        </AutoResizer>
+    </Wrapper>;
 };

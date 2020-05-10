@@ -10,7 +10,7 @@ export default function LengthLegend({maxDistance, fill}) {
         i => minRadius + i / (lengthCount - 1) * (maxRadius - minRadius)
     );
     const entryStart = 15;
-    const entrySize = 30;
+    const entrySize = 33;
     const svgWidth = entrySize * lengthCount + entryStart;
     const svgHeight = maxRadius + 15;
 
@@ -31,7 +31,7 @@ export default function LengthLegend({maxDistance, fill}) {
                             strokeOpacity={lineOpacity}
                         />
                         <text x={x} y={l + 2} dominantBaseline='hanging' textAnchor='middle'>
-                            {(invScale(1 - (l - minRadius) / (maxRadius - minRadius), radiusScale)*maxDistance).toFixed(2)}
+                            {(invScale(1 - (l - minRadius) / (maxRadius - minRadius), radiusScale)*maxDistance).toFixed(1)}
                         </text>
                     </React.Fragment>
                 })
