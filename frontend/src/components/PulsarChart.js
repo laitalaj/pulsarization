@@ -7,8 +7,23 @@ import FilterSlider from './chartparts/FilterSlider';
 import PulsarScatter from './PulsarScatter';
 import PulsarLegend from './PulsarLegend';
 import { typeToColor } from './chartparts/CustomMarker';
+import PulsarTable from './PulsarTable';
+
+function ChartContent({tableOn, pulsars, blobs, maximums, shownArea, onBrush}) {
+    return tableOn
+        ? <PulsarTable pulsars={pulsars} />
+        : <PulsarScatter
+            pulsars={pulsars}
+            blobs={blobs}
+            maximums={maximums}
+            shownArea={shownArea}
+            onBrush={onBrush}
+        />
+}
 
 export default function PulsarChart() {
+    const [tableOn, setTableOn] = useState(false);
+
     const [fields, setFields] = useState(['psrj', 'raj', 'decj', 'f0', 'dist_dm', 'types']);
     const [filters, setFilters] = useState([
         { field: 'decj', op: '!=', value: 'null' },
@@ -82,13 +97,14 @@ export default function PulsarChart() {
         <Wrapper>
             {pulsarsLoading || maximumsLoading
                 ? <Text>Loading...</Text>
-                : <PulsarScatter
+                : <ChartContent
+                    tableOn={tableOn}
                     pulsars={filteredPulsars}
                     blobs={blobs}
                     maximums={maximums}
                     shownArea={shownArea}
                     onBrush={setShownArea}
-                  />
+                />
             }
             <FilterSlider
                 domain={[0, 24]}
@@ -110,6 +126,8 @@ export default function PulsarChart() {
             : <PulsarLegend
                 maxDistance={maximums.dist_dm} maxFrequency={maximums.f0}
                 shownTypes={shownTypes}
+                tableOn={tableOn}
+                onTableToggle={setTableOn}
                 onFreqFilter={values => setFreqRange(values)}
                 onDistFilter={values => setDistRange(values)}
                 onTypeFilter={t => shownTypes.includes(t)

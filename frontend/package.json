@@ -11,8 +11,10 @@
     "@babel/runtime": "^7.9.2",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
+    "react-base-table": "^1.9.2",
     "react-compound-slider": "^2.5.0",
     "react-dom": "^16.13.1",
+    "react-switch": "^5.0.1",
     "recharts": "^1.8.5",
     "styled-components": "^5.1.0",
     "what-the-pack": "^2.0.3"

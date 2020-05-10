@@ -30,7 +30,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-end;
 `
 
 export const LegendWrapper = styled(Wrapper)`
@@ -155,4 +155,14 @@ export const VerticalTrackFill = styled(TrackFill)`
     top: ${props => props.sourcePercent}%;
     height: ${props => props.targetPercent - props.sourcePercent}%;
     margin-left: ${sliderRailMargin};
+`
+
+export const ToggleText = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 15px;
+    color: white;
+    padding-${props => props.side}: 4px;
 `
