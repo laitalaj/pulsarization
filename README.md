@@ -12,6 +12,12 @@ Spring 2020, University of Helsinki.
 Pulsarization is available for playing around with at
 [pulsarization.azurewebsites.net](https://pulsarization.azurewebsites.net/)!
 
+## The design rationale
+
+This app was designed with scientific visualization best practices in mind.
+For more elaboration on the design choices, check out
+[the related report](http://julius.laita.la/pdfs/pulsarization)
+
 ## Running locally
 
 1. Make sure you have Python 3, node and yarn installed
